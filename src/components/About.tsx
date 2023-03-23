@@ -1,3 +1,4 @@
+import { useRef, useEffect } from "react";
 import DanImage from "../assets/media/DanStands_V2.jpg";
 
 const getCurrYear = () => {
@@ -9,9 +10,17 @@ const getCurrExperience = () => {
   return getCurrYear() - theYearItBegan;
 };
 
-export default function About() {
+export default function About({ elementHeight }: any) {
+  const aboutMeRef = useRef<HTMLDivElement>(null);
+  let thisElementsHeight = () => aboutMeRef.current?.clientHeight;
+  useEffect(() => {
+    elementHeight(thisElementsHeight());
+  }, []);
+  let handleResize = () => elementHeight(thisElementsHeight());
+  window.addEventListener("resize", handleResize);
+
   return (
-    <section className="wipes-nav about-me">
+    <section className="wipes-nav about-me" ref={aboutMeRef}>
       <div>
         <div className="img-overlay"></div>
         <img src={DanImage}></img>

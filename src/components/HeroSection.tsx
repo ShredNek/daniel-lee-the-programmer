@@ -11,7 +11,7 @@ export default function HeroSection({ elementHeight }: any) {
   window.addEventListener("resize", handleResize);
 
   return (
-    <section ref={heroRef}>
+    <section ref={heroRef} className="hero">
       <div className="overlay">
         <div className="text ">
           <h1 className="typewriter">I am Daniel Lee.</h1>

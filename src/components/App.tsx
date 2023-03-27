@@ -4,6 +4,7 @@ import HeroSection from "./HeroSection";
 import About from "./About";
 import Nav from "./Nav";
 import Slider from "./Slider";
+import Portfolio from "./Portfolio";
 
 export const NavContext = createContext<string | unknown>(null);
 
@@ -19,6 +20,8 @@ export default function App() {
   // ? Component States
   const [heroSectionHeight, setHeroSectionHeight] = useState<number>(0);
   const [aboutMeSectionHeight, setAboutMeSectionHeight] = useState<number>(0);
+  const [portfolioSectionHeight, setPortfolioSectionHeight] =
+    useState<number>(0);
   const [sliderPercent, setSliderPercent] = useState<string>("0%");
 
   // ? Refs
@@ -37,16 +40,24 @@ export default function App() {
   let aboutMeSectionHeightCall = (val: number) => {
     val !== undefined ? setAboutMeSectionHeight(val) : 0;
   };
+  let portfolioSectionHeightCall = (val: number) => {
+    val !== undefined ? setPortfolioSectionHeight(val) : 0;
+  };
 
   // ? Pre-mount variables
-  let spaTotalHeight = () => sum(heroSectionHeight, aboutMeSectionHeight);
+  const allComponents = [
+    heroSectionHeight,
+    aboutMeSectionHeight,
+    portfolioSectionHeight,
+  ];
+
+  let spaTotalHeight = () => sum(...allComponents);
 
   let resolution = () => Math.abs(window.innerHeight);
 
   useEffect(() => {
     spaTotalHeight();
-    console.log(spaTotalHeight());
-  }, [heroSectionHeight, aboutMeSectionHeight]);
+  }, [...allComponents]);
 
   // ? Wheel Function
   function handleWheelCapture() {
@@ -63,18 +74,6 @@ export default function App() {
         clientWindowOffsetProgressThroughApp
       )
     );
-    console.log(sliderPercent);
-
-    // // ? Debugging
-    // console.clear();
-    // console.log(
-    //   "the percent is... " +
-    //     progressBarPercent(
-    //       spaTotalHeight,
-    //       resolution,
-    //       clientWindowOffsetProgressThroughApp
-    //     )
-    // );
   }
   // ? Progress Bar Percentage
   let progressBarPercent = (
@@ -87,13 +86,14 @@ export default function App() {
 
   const [context, setContext] = useState("");
   return (
-    <div ref={globalDomRef} onWheelCapture={handleWheelCapture}>
+    <main ref={globalDomRef} onWheelCapture={handleWheelCapture}>
       <NavContext.Provider value={[context, setContext]}>
         <Slider percentage={sliderPercent} />
-        <Nav />
         <HeroSection elementHeight={heroSectionHeightCall} />
+        <Nav />
         <About elementHeight={aboutMeSectionHeightCall} />
+        <Portfolio elementHeight={portfolioSectionHeightCall} />
       </NavContext.Provider>
-    </div>
+    </main>
   );
 }

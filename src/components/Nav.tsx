@@ -1,10 +1,9 @@
 import { useContext } from "react";
 
 export default function Nav() {
-  
-  console.log()
+  console.log();
   return (
-    <nav id="nav" className="pinned-right">
+    <nav id="nav">
       <ul>
         <li>Home</li>
         <li>About</li>
